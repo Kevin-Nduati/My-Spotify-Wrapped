@@ -1,0 +1,4 @@
+files:
+  songs: "/home/kevin/Desktop/Github projects/Spotify-API/spotify_data/spotify_songs"
+  genres: '/home/kevin/Desktop/Github projects/Spotify-API/spotify_data/spotify_genres'
+  genres_tmp: '/home/kevin/Desktop/Github projects/Spotify-API/spotify_data/spotify_genres_tmp'
