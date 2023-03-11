@@ -29,7 +29,8 @@ class RetrieveSongs:
         }
         data = []
         song_count = 0
-        while song_count < 570:
+        n = 10000
+        while song_count < n:
             response = requests.get(url, params=params, headers=headers)
             response_data = response.json()
             tracks = response_data["tracks"]["items"]
@@ -44,7 +45,7 @@ class RetrieveSongs:
                 }
                 data.append(track_data)
                 song_count += 1
-                if song_count == 570:
+                if song_count == n:
                     break
             if response_data["tracks"]["next"]:
                 params = None
