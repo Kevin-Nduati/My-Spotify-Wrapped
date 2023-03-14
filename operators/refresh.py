@@ -2,7 +2,7 @@
 Generates a new access token on each run
 """
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key
 load_dotenv()
 import requests
 import os
@@ -11,7 +11,8 @@ from urllib.parse import quote
 
 refresh_token = os.getenv("refresh_token")
 base_64 = os.getenv("base_64")
-
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+print(parent_dir+ "/.env")
 
 import requests
 
@@ -42,6 +43,8 @@ if __name__=="__main__":
     new_token = RefreshToken(refresh_token, base_64)
     try:
         access_token = new_token.refresh()
+        # os.environ["ACCESS_TOKEN"] = access_token
+        set_key(dotenv_path = parent_dir+"/.env", key_to_set="access_token",value_to_set= access_token)
         print("Access token:", access_token)
     except Exception as e:
         print("Error:", str(e))

@@ -1,0 +1,64 @@
+{"items": [
+    {"track": {"album": 
+                    {"album_group": "album", 
+                    "album_type": "album", 
+                    "artists": [{
+                        "external_urls": {"spotify": "https://open.spotify.com/artist/4pmNqFu71wEmFXSsYAiWK8"}, 
+                        "href": "https://api.spotify.com/v1/artists/4pmNqFu71wEmFXSsYAiWK8", 
+                        "id": "4pmNqFu71wEmFXSsYAiWK8", 
+                        "name": "Makaveli", 
+                        "type": "artist", 
+                        "uri": "spotify:artist:4pmNqFu71wEmFXSsYAiWK8"}], 
+                    "available_markets": ["TZ", "UA", "UG", "US", "UY", "UZ", "VC", "VE", "VN", "VU", "WS", "XK", "ZA", "ZM", "ZW"], 
+                    "external_urls": {"spotify": "https://open.spotify.com/album/2gWrUaBkh1uQARjbjvUGNp"}, 
+                    "href": "https://api.spotify.com/v1/albums/2gWrUaBkh1uQARjbjvUGNp", 
+                    "id": "2gWrUaBkh1uQARjbjvUGNp", 
+                    "images": [
+                        {"height": 640, "url": "https://i.scdn.co/image/ab67616d0000b273c151cbd53f57496d757a0154", "width": 640}, 
+                        {"height": 300, "url": "https://i.scdn.co/image/ab67616d00001e02c151cbd53f57496d757a0154", "width": 300}, 
+                        {"height": 64, "url": "https://i.scdn.co/image/ab67616d00004851c151cbd53f57496d757a0154", "width": 64}
+                                ], 
+                    "is_playable": true, 
+                    "name": "The Don Killuminati: The 7 Day Theory", 
+                    "release_date": "1996-11-05", 
+                    "release_date_precision": "day", 
+                    "total_tracks": 12, 
+                    "type": "album", 
+                    "uri": "spotify:album:2gWrUaBkh1uQARjbjvUGNp"}, 
+                    
+                "artists": 
+                [
+                    {"external_urls": {"spotify": "https://open.spotify.com/artist/4pmNqFu71wEmFXSsYAiWK8"}, 
+                    "href": "https://api.spotify.com/v1/artists/4pmNqFu71wEmFXSsYAiWK8", 
+                    "id": "4pmNqFu71wEmFXSsYAiWK8", 
+                    "name": "Makaveli", 
+                    "type": "artist", 
+                    "uri": "spotify:artist:4pmNqFu71wEmFXSsYAiWK8"}
+                ], 
+                "available_markets": ["AR",  "XK"], 
+                "disc_number": 1, 
+                "duration_ms": 308266, 
+                "explicit": true, 
+                "external_ids": {"isrc": "USKO10403733"}, 
+                "external_urls": {"spotify": "https://open.spotify.com/track/7722WsrGPUvUMcfBR87nhc"}, 
+                "href": "https://api.spotify.com/v1/tracks/7722WsrGPUvUMcfBR87nhc", 
+                "id": "7722WsrGPUvUMcfBR87nhc", 
+                "is_local": false, 
+                "name": "Me And My Girlfriend", 
+                "popularity": 61, 
+                "preview_url": "https://p.scdn.co/mp3-preview/304194ee1a5fe3653efc782ba2387051cd3824b2?cid=2f33fbe518d54e698b1a95898b110d18", 
+                "track_number": 10, 
+                "type": "track", 
+                "uri": "spotify:track:7722WsrGPUvUMcfBR87nhc"}, 
+                "played_at": "2023-03-07T08:10:42.225Z", 
+                "context": {"external_urls": 
+                                {"spotify": "https://open.spotify.com/playlist/49RoQF55lyRSgSZwRAHh5K"}, 
+                                "href": "https://api.spotify.com/v1/playlists/49RoQF55lyRSgSZwRAHh5K", 
+                                "type": "playlist", 
+                                "uri": "spotify:playlist:49RoQF55lyRSgSZwRAHh5K"}}
+                                    
+            ], 
+    "next": "https://api.spotify.com/v1/me/player/recently-played?before=1678176642225&limit=1", 
+    "cursors": {"after": "1678176642225", "before": "1678176642225"}, 
+    "limit": 1, 
+    "href": "https://api.spotify.com/v1/me/player/recently-played?limit=1"}

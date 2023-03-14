@@ -6,75 +6,53 @@ import requests
 import json
 import os
 from refresh import RefreshToken
+from dotenv import load_dotenv
+load_dotenv()
 
 
 
-class RetrieveSongs:
-    def __init__(self, filepath):
-        self.user_id = os.getenv("spotify_username")  # Spotify username
-        self.spotify_token = ""  # Spotify access token
-        self.file_path = filepath  # File path to save JSON file
+
+def recently_played_songs(filepath):
+    url = f"https://api.spotify.com/v1/me/player/recently-played?limit=5"
+    # &after={start_time}&before={end_time}"
+    params = {}
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {os.getenv('access_token')}"
+    }
+    data = []
+    response = requests.get(url, params=params, headers=headers)
+    if response.status_code == 200:
+        response_data = response.json()
+        tracks = response_data["items"]
+        for track in tracks:
+            track_data = {
+                "track_id": track["track"]["id"],
+                "track_name": track["track"]["name"],
+                "album_name": track["track"]["album"]["name"],
+                "album_id": track["track"]["album"]["id"],
+                "release_date": track["track"]["album"]["release_date"],
+                "artist_id": track["track"]["artists"][0]["id"],
+                "artist_name": track["track"]["artists"][0]["name"],
+                "song_duration_ms": track["track"]["duration_ms"],
+                "explicit": track["track"]["explicit"],
+                "popularity": track["track"]["popularity"],
+                "played_at": track["played_at"]
+            }
+        data.append(track_data)
+
+        print("Success!!!!")
+
+    else:
+        print(f"{response.status_code}: Error Retrieving Spotify Data")
+    
         
-
-    def collect_kenyan_songs(self):
-        url = "https://api.spotify.com/v1/search?limit=50"
-        params = (
-            ('q', "Kenya"), #popularity:>30
-            ('type', "track")
-        )
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.spotify_token}"
-        }
-        data = []
-        song_count = 0
-        n = 10000
-        while song_count < n:
-            response = requests.get(url, params=params, headers=headers)
-            response_data = response.json()
-            tracks = response_data["tracks"]["items"]
-            for track in tracks:
-                track_data = {
-                    "name": track["name"],
-                    "id": track["id"],
-                    "artist_name": track["artists"][0]["name"],
-                    "artist_id": track["artists"][0]["id"],
-                    "release_date": track["album"]["release_date"],
-                    "popularity": track["popularity"]
-                }
-                data.append(track_data)
-                song_count += 1
-                if song_count == n:
-                    break
-            if response_data["tracks"]["next"]:
-                params = None
-                url = response_data["tracks"]["next"]
-            else:
-                break
-            
-        with open(self.file_path, 'w') as f:
-            json.dump(data, f)
+    with open(filepath, 'w') as f:
+        json.dump(data, f)
 
         
-            
-    def call_refresh(self, **context):
-        refresh_token = os.getenv("refresh_token")
-        base_64 = os.getenv("base_64")
-        refresher = RefreshToken(refresh_token, base_64)
-        self.spotify_token = refresher.refresh()
-        self.collect_kenyan_songs()
-
-        
-
-
-
-if __name__ =="__main__":
-    cwd = "/home/kevin/Desktop/Github projects/My-Spotify-Wrapped/operators"
-    filepath = os.path.join(cwd, "kenyan_songs.json")
-    tracks = RetrieveSongs(filepath)
-    tracks.call_refresh()
-    print(len)
+    
     
 
 

@@ -10,13 +10,11 @@ headers = {
             "Authorization": "Bearer {}".format(os.getenv("access_token"))
         }
 params = (
-    ('q', "Kenya popularity:>30"),
-    ('type', "track")
+    # ('q', "Kenya popularity:>30"),
+    # ('type', "track")
 )
 
-url = "https://api.spotify.com/v1/search?limit=1"
-# "https://api.spotify.com/v1/me/top/artists?limit=10"
-# "https://api.spotify.com/v1/me/player/recently-played?limit=10"
+url ="https://api.spotify.com/v1/me/player/recently-played?limit=1"
 
 headers = headers
 
