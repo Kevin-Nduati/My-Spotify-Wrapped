@@ -12,9 +12,8 @@ load_dotenv()
 
 
 
-def recently_played_songs(filepath):
-    url = f"https://api.spotify.com/v1/me/player/recently-played?limit=5"
-    # &after={start_time}&before={end_time}"
+def recently_played_songs(start_time, filepath):
+    url = f"https://api.spotify.com/v1/me/player/recently-played?limit=50&after={start_time}"
     params = {}
     headers = {
         "Accept": "application/json",
@@ -25,6 +24,7 @@ def recently_played_songs(filepath):
     response = requests.get(url, params=params, headers=headers)
     if response.status_code == 200:
         response_data = response.json()
+        print(f"There are {len(response_data)} in the dictionary")
         tracks = response_data["items"]
         for track in tracks:
             track_data = {
@@ -40,16 +40,19 @@ def recently_played_songs(filepath):
                 "popularity": track["track"]["popularity"],
                 "played_at": track["played_at"]
             }
-        data.append(track_data)
+            data.append(track_data)
 
         print("Success!!!!")
+        print(url)
 
     else:
         print(f"{response.status_code}: Error Retrieving Spotify Data")
+
+    with open(filepath, 'a') as f:
+        json.dump(data, f)
     
         
-    with open(filepath, 'w') as f:
-        json.dump(data, f)
+    
 
         
     
