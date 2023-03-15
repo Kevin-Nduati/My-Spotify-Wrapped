@@ -1,9 +1,26 @@
-CREATE TABLE spotify_kenyan_data (
+CREATE TABLE tracks(
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  track_id VARCHAR(255) NOT NULL,
-  artist_name VARCHAR(255) NOT NULL,
-  artist_id VARCHAR(255) NOT NULL,
-  release_date DATE NOT NULL,
-  popularity INTEGER NOT NULL
+  track_id TEXT,
+  track_name TEXT,
+  album_id TEXT,
+  artist_id TEXT,
+  song_duration_ms INTEGER,
+  is_explicit BOOLEAN,
+  popularity INTEGER,
+  played_at TIMESTAMP
 );
+
+
+
+CREATE TABLE albums (
+  id SERIAL PRIMARY KEY,
+  album_id TEXT,
+  album_name TEXT,
+  release_date TEXT
+);
+
+CREATE TABLE artists (
+  id SERIAL PRIMARY KEY,
+  artist_id TEXT,
+  artist_name TEXT
+)

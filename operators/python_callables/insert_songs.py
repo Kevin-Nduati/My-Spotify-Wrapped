@@ -2,30 +2,30 @@ import json
 import psycopg2
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
-def load_json_to_postgres(filepath: str, tableName: str, databaseName: str, postgres_conn_id: str, *args, **kwargs):
-    # load the data from json
-    with open(filepath, "r") as f:
-        data = json.load(f)
-
-    # insert the data
-    def insert_data(data):
-        # connect to the postgres database
-        hook = PostgresHook(postgres_conn_id=postgres_conn_id)
-        conn = hook.get_conn()
-        cur = conn.cursor()
+def load_json_to_postgres(data, databaseName: str, postgres_conn_id: str, *args, **kwargs):
+    # connect to the postgres database
+    hook = PostgresHook(postgres_conn_id=postgres_conn_id)
+    conn = hook.get_conn()
+    cur = conn.cursor()
 
 
-        for row in data:
-            cur.execute(
-                f"""
-                INSERT INTO {tableName} (name, id, artist_name, artist_id, release_date, popularity)
-                VALUES (%s, %s, %s, %s, %s, %s)
-                """, (row["name"], row["id"], row["artist_name"], row["artist_id"], row["release_date"], row["popularity"])
-            )
+    for row in data:
+        cur.execute(
+    """
+    INSERT INTO tracks (track_id, track_name, album_id, artist_id, song_duration_ms, is_explicit, popularity, played_at)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+    INSERT INTO albums (album_id, album_name, release_date)
+    VALUES (%s, %s, %s);
+    INSERT INTO artists (artist_id, artist_name)
+    VALUES (%s, %s)
+    """, (
+        row["track_id"], row["track_name"], row["album_id"], row["artist_id"], row["song_duration_ms"], 
+        row["explicit"], row["popularity"], row["played_at"], row["album_id"], row["album_name"], 
+        row["release_date"], row["artist_id"], row["artist_name"]
+    )
+)
+
 
         conn.commit()
-        cur.close()
-        conn.close()
-
-
-    insert_data(data)
+        # cur.close()
+        # conn.close()

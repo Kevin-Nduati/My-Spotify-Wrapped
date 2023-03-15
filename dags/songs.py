@@ -24,18 +24,27 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'operators')))
 import postgres_connect
 from python_callables.collect_songs import recently_played_songs
-from python_callables.insert_songs import *
-filepath = os.path.join(parent_dir, "operators", "kenyan_songs.json")
+from python_callables.insert_songs import load_json_to_postgres
 refresh_token = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'operators', 'refresh.py'))
 postgres_connection = postgres_connect.ConnectPostgres().postgres_connector()
 
-# config
-# start_time = datetime.now() - timedelta(days=10)
-def get_recently_played_songs(filepath, **context):
+def get_recently_played_songs(**context):
     start_time = context["execution_date"] 
+    print(f"Execution date: {start_time}")
     start_time_unix_timestamp = int(start_time.timestamp())
-    recently_played_songs(start_time=start_time_unix_timestamp, filepath=filepath)
-    print(start_time)
+    data = recently_played_songs(start_time=start_time_unix_timestamp)
+    ti = context["ti"]
+    ti.xcom_push(key=f"my_data", value=data)
+
+
+
+def insert_data_from_xcom(databaseName, postgres_conn_id, **context):
+    ti = context["ti"]
+    data = ti.xcom_pull(key="my_data")
+    load_json_to_postgres(data=data, databaseName=databaseName, postgres_conn_id=postgres_conn_id)
+
+
+    
 
 
 
@@ -53,7 +62,7 @@ default_args = {
 dag = DAG(
     "spotify_wrapped1",
     default_args=default_args,
-    start_date=days_ago(30),
+    start_date=days_ago(2),
     schedule_interval="@daily"
 )
 
@@ -68,10 +77,18 @@ get_access_token = BashOperator(
 collect_songs_data = PythonOperator(
     task_id = "collect_songs",
     python_callable= get_recently_played_songs,
-    op_kwargs={
-    "filepath": filepath
-    },
+    
     provide_context=True,
+    dag = dag
+)
+
+insert_data = PythonOperator(
+    task_id = "insert_data",
+    python_callable = insert_data_from_xcom,
+    op_kwargs={
+        "databaseName": "spotify", 
+        "postgres_conn_id": "postgres_conn"
+    }, 
     dag = dag
 )
 
@@ -88,7 +105,7 @@ collect_songs_data = PythonOperator(
 # )
 
 
-get_access_token >> collect_songs_data
+get_access_token >> collect_songs_data >> insert_data
 
 
 
