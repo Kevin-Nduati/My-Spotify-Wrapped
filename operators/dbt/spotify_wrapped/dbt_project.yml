@@ -27,7 +27,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 packages:
   - package: test_macros
     version: 0.1.0
-    git: 
+    git: https://github.com/Kevin-Nduati/My-Spotify-Wrapped.git
 
 
 # Configuring models
