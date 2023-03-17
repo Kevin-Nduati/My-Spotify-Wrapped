@@ -24,6 +24,11 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+packages:
+  - package: test_macros
+    version: 0.1.0
+    git: 
+
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -34,5 +39,4 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   spotify_wrapped:
     # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+    
