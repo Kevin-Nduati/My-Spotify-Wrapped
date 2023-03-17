@@ -2,4 +2,4 @@
 {% set track_name = 'My Song (feat. Artist)' %}
 
 SELECT 
-    {{ format_track_name }} AS formatted_track_name
+    {{ ref('format_track_name')(track_name) }} AS formatted_track_name
