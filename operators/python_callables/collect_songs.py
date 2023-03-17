@@ -11,7 +11,6 @@ load_dotenv()
 
 
 
-
 def recently_played_songs(start_time):
     url = f"https://api.spotify.com/v1/me/player/recently-played?limit=50&after={start_time}"
     params = {}

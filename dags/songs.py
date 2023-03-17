@@ -60,10 +60,10 @@ default_args = {
 }
 
 dag = DAG(
-    "spotify_wrapped1",
+    "spotify_wrapped",
     default_args=default_args,
-    start_date=days_ago(2),
-    schedule_interval="@daily"
+    start_date=days_ago(120),
+    schedule_interval="@hourly"
 )
 
 get_access_token = BashOperator(
@@ -93,16 +93,6 @@ insert_data = PythonOperator(
 )
 
 
-# load_data = PythonOperator(
-#     task_id = "load_data",
-#     python_callable=load_json_to_postgres,
-#     op_kwargs={
-#         "filepath": filepath,
-#         "tableName": "public.spotify_kenyan_data",
-#         "databaseName": "spotify",
-#         "postgres_conn_id": "postgres_conn"
-#     }
-# )
 
 
 get_access_token >> collect_songs_data >> insert_data
