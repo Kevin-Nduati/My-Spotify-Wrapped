@@ -14,7 +14,11 @@ params = (
     # ('type', "track")
 )
 
-url ="https://api.spotify.com/v1/me/player/recently-played?limit=1"
+# url ="https://api.spotify.com/v1/me/player/recently-played?limit=2"
+# url = "https://api.spotify.com/v1/tracks/1nTNZgKeqm4ODmIVL07nxe"
+# url = "https://api.spotify.com/v1/artists?ids=4fxd5Ee7UefO4CUXgwJ7IP"
+url = "https://api.spotify.com/v1/artists?ids=3TVXtAsR1Inumwj472S9r4"
+https://api.spotify.com/v1/artists?ids=0KiKfllNTmhImvXVIHqR0z
 
 headers = headers
 

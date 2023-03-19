@@ -14,13 +14,16 @@ CREATE TABLE tracks(
 
 CREATE TABLE albums (
   id SERIAL PRIMARY KEY,
-  album_id TEXT,
+  album_id TEXT UNIQUE,
   album_name TEXT,
   release_date TEXT
 );
 
 CREATE TABLE artists (
   id SERIAL PRIMARY KEY,
-  artist_id TEXT,
-  artist_name TEXT
+  artist_id  TEXT UNIQUE,
+  artist_name TEXT,
+  genres TEXT
+
 )
+

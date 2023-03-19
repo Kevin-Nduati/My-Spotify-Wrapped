@@ -25,16 +25,36 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'o
 import postgres_connect
 from python_callables.collect_songs import recently_played_songs
 from python_callables.insert_songs import load_json_to_postgres
+from python_callables.last_played_at import last_song
 refresh_token = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'operators', 'refresh.py'))
 postgres_connection = postgres_connect.ConnectPostgres().postgres_connector()
 
-def get_recently_played_songs(**context):
-    start_time = context["execution_date"] 
-    print(f"Execution date: {start_time}")
-    start_time_unix_timestamp = int(start_time.timestamp())
-    data = recently_played_songs(start_time=start_time_unix_timestamp)
-    ti = context["ti"]
-    ti.xcom_push(key=f"my_data", value=data)
+def get_recently_played_songs(postgres_conn_id, **context):
+    last_played_song = last_song(postgres_conn_id=postgres_conn_id)
+    execution_date = context["execution_date"]
+    if last_played_song is None:
+        date_string = execution_date.strftime('%Y-%m-%d %H:%M:%S.%f')
+        print(f"NONE: last_played_song: {date_string}")
+        timestamp = int(time.mktime(time.strptime(date_string, '%Y-%m-%d %H:%M:%S.%f')))
+        data = recently_played_songs(start_time=timestamp)
+        ti = context["ti"]
+        
+        ti.xcom_push(key=f"my_data", value=data)
+
+    else:
+        if last_played_song.strftime('%Y-%m-%d %H:%M:%S.%f') >= execution_date.strftime('%Y-%m-%d %H:%M:%S.%f'):
+            print(f"SKIPPING.....")
+            pass
+        else:
+            date_string = last_played_song.strftime('%Y-%m-%d %H:%M:%S.%f')
+            print(f"last_played_song: {date_string}")
+            timestamp = int(time.mktime(time.strptime(date_string, '%Y-%m-%d %H:%M:%S.%f')))
+            data = recently_played_songs(start_time=timestamp)
+            ti = context["ti"]
+            ti.xcom_push(key=f"my_data", value=data)
+
+
+
 
 
 
@@ -55,14 +75,16 @@ default_args = {
     "email_on_retry": False,
     "email_on_failure": False,
     "retries": 4,
-    "retry_delay": timedelta(minutes=0.5)
+    "retry_delay": timedelta(minutes=0.5),
+    "max_active_runs": 1
+    
 
 }
 
 dag = DAG(
     "spotify_wrapped",
     default_args=default_args,
-    start_date=days_ago(120),
+    start_date=days_ago(200),
     schedule_interval="@hourly"
 )
 
@@ -77,7 +99,9 @@ get_access_token = BashOperator(
 collect_songs_data = PythonOperator(
     task_id = "collect_songs",
     python_callable= get_recently_played_songs,
-    
+    op_kwargs = {
+    "postgres_conn_id": "postgres_conn"
+    },
     provide_context=True,
     dag = dag
 )
@@ -89,13 +113,15 @@ insert_data = PythonOperator(
         "databaseName": "spotify", 
         "postgres_conn_id": "postgres_conn"
     }, 
-    dag = dag
+    dag = dag,
+    trigger_rule="all_success"
 )
 
 
 
-
 get_access_token >> collect_songs_data >> insert_data
+
+
 
 
 

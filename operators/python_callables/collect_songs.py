@@ -12,7 +12,8 @@ load_dotenv()
 
 
 def recently_played_songs(start_time):
-    url = f"https://api.spotify.com/v1/me/player/recently-played?limit=50&after={start_time}"
+    url = f"https://api.spotify.com/v1/me/player/recently-played?limit=2&after={start_time}"
+    url2 = "https://api.spotify.com/v1/artists?ids="
     params = {}
     headers = {
         "Accept": "application/json",
@@ -21,9 +22,10 @@ def recently_played_songs(start_time):
     }
     data = []
     response = requests.get(url, params=params, headers=headers)
-    if response.status_code == 200:
-        response_data = response.json()
-        print(f"There are {len(response_data)} in the dictionary")
+    response_data = response.json()
+    # have to make sure the output is not blank
+    # hit second url for artist information
+    if len(response_data) != 0:
         tracks = response_data["items"]
         for track in tracks:
             track_data = {
@@ -39,6 +41,12 @@ def recently_played_songs(start_time):
                 "popularity": track["track"]["popularity"],
                 "played_at": track["played_at"]
             }
+            artist_url = url2 + track_data["artist_id"]
+            response = requests.get(artist_url, headers=headers)
+            response_data = response.json()
+            track_data["artist_genres"] = response_data["artists"][0]["genres"]
+            
+
             data.append(track_data)
 
         print(f"The operation has been successfully run!!!")
@@ -47,9 +55,6 @@ def recently_played_songs(start_time):
 
     else:
         print(f"{response.status_code}: Error Retrieving Spotify Data")
-
-    # with open(filepath, 'a') as f:
-    #     json.dump(data, f)
     
         
     
