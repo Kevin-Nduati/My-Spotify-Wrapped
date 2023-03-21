@@ -15,4 +15,5 @@ GROUP BY a.artist_name, t.artist_id
 ORDER BY streams  DESC
 LIMIT {{ limit }}
 
+
 {% endmacro %}

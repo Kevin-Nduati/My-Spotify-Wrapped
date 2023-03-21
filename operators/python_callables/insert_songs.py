@@ -7,7 +7,6 @@ def load_json_to_postgres(data, databaseName: str, postgres_conn_id: str, *args,
     hook = PostgresHook(postgres_conn_id=postgres_conn_id)
     conn = hook.get_conn()
     cur = conn.cursor()
-
     try:
         for row in data:
             cur.execute(
@@ -28,6 +27,7 @@ def load_json_to_postgres(data, databaseName: str, postgres_conn_id: str, *args,
             conn.commit()
             # cur.close()
             # conn.close()
+        print(f"The insert procedure has been successfully run")
     except Exception as e:
         print(e)
 
