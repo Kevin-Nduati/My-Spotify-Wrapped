@@ -2,6 +2,7 @@ from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.models import Variable, XCom
 from datetime import datetime, timedelta
+import time
 import requests
 import json
 import os
@@ -12,7 +13,13 @@ load_dotenv()
 
 
 def recently_played_songs(start_time):
-    url = f"https://api.spotify.com/v1/me/player/recently-played?limit=2&after={start_time}"
+    start_time = datetime.fromisoformat(str(start_time))
+    date_obj = start_time + timedelta(hours=1)
+
+    # convert the datetime to unix timestamp
+    end_date = int(time.mktime(date_obj.timetuple()))
+    print(f"End Date: {end_date}")
+    url = f"https://api.spotify.com/v1/me/player/recently-played?limit=50&before={end_date}"
     url2 = "https://api.spotify.com/v1/artists?ids="
     params = {}
     headers = {
@@ -23,9 +30,11 @@ def recently_played_songs(start_time):
     data = []
     response = requests.get(url, params=params, headers=headers)
     response_data = response.json()
+    
     # have to make sure the output is not blank
     # hit second url for artist information
-    if len(response_data) != 0:
+    if len(response_data['items']) != 0:
+        print(f"There are {len(response_data['items'])} items in the dictionary")
         tracks = response_data["items"]
         for track in tracks:
             track_data = {
@@ -48,13 +57,14 @@ def recently_played_songs(start_time):
             
 
             data.append(track_data)
+            
 
         print(f"The operation has been successfully run!!!")
         return data
 
 
     else:
-        print(f"{response.status_code}: Error Retrieving Spotify Data")
+        print(f"No data was retrieved")
     
         
     
