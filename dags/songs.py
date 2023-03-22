@@ -30,13 +30,31 @@ refresh_token = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'o
 postgres_connection = postgres_connect.ConnectPostgres().postgres_connector()
 
 
-def get_recently_played_songs(**context):
-    start_time = context["execution_date"]
-    print(f"Start Time: {start_time}")
-    data = recently_played_songs(start_time=start_time)
-    ti = context["ti"]
+def get_next_execution_date():
+    last_play_time = last_song(postgres_conn_id = "postgres_conn")
 
-    ti.xcom_push(key=f"my_data", value=data)
+    return last_play_time
+
+def get_recently_played_songs(postgres_conn_id, **context):
+    last_play_time = get_next_execution_date()
+    execution_date = context['execution_date']
+    if last_play_time is None:
+        date_string = execution_date.strftime('%Y-%m-%d %H:%M:%S.%f')
+        print(f"The database is empty. So we will use {date_string}")
+        timestamp = int(time.mktime(time.strptime(date_string, '%Y-%m-%d %H:%M:%S.%f')))
+        data = recently_played_songs(start_time=timestamp)
+        ti = context["ti"]
+        ti.xcom_push(key="my_data", value=data)
+    else:
+        date_string = last_play_time.strftime('%Y-%m-%d %H:%M:%S.%f')
+        print(f"The last played song is: {date_string}")
+        timestamp = int(time.mktime(time.strptime(date_string, '%Y-%m-%d %H:%M:%S.%f')))
+        data = recently_played_songs(start_time=timestamp)
+        ti = context["ti"]
+        ti.xcom_push(key=f"my_data", value=data)
+
+
+
 
 
 
@@ -58,18 +76,18 @@ default_args = {
     # "start_date": start_time,
     "email_on_retry": False,
     "email_on_failure": False,
-    "retries": 4,
+    "retries": 2,
     "retry_delay": timedelta(minutes=0.5),
-    "max_active_runs": 1
-    
+    "max_active_runs": 1,
+    "execution_date_fn": get_next_execution_date
 
 }
-
+# spotify does not store more than 50
 dag = DAG(
     "my_spotify_wrapped",
     default_args=default_args,
-    start_date=days_ago(200),
-    schedule_interval="@hourly"
+    start_date=days_ago(1),
+    schedule_interval= timedelta(hours=3) # you can define a cron job
 )
 
 get_access_token = BashOperator(
@@ -83,6 +101,9 @@ get_access_token = BashOperator(
 collect_songs_data = PythonOperator(
     task_id = "collect_songs",
     python_callable= get_recently_played_songs,
+    op_kwargs={
+    "postgres_conn_id": "postgres_conn"
+    },
     provide_context=True,
     dag = dag
 )

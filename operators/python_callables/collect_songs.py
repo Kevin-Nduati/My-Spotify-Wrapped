@@ -13,13 +13,8 @@ load_dotenv()
 
 
 def recently_played_songs(start_time):
-    start_time = datetime.fromisoformat(str(start_time))
-    date_obj = start_time + timedelta(hours=1)
-
-    # convert the datetime to unix timestamp
-    end_date = int(time.mktime(date_obj.timetuple()))
-    print(f"End Date: {end_date}")
-    url = f"https://api.spotify.com/v1/me/player/recently-played?limit=50&before={end_date}"
+    print(f"Start Date: {start_time}")
+    url = f"https://api.spotify.com/v1/me/player/recently-played?limit=50&after={start_time}"
     url2 = "https://api.spotify.com/v1/artists?ids="
     params = {}
     headers = {
