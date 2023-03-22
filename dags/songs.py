@@ -29,31 +29,6 @@ from python_callables.last_played_at import last_song
 refresh_token = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'operators', 'refresh.py'))
 postgres_connection = postgres_connect.ConnectPostgres().postgres_connector()
 
-# def get_recently_played_songs(postgres_conn_id, **context):
-#     last_played_song = last_song(postgres_conn_id=postgres_conn_id)
-#     execution_date = context["execution_date"] 
-#     print(f"time : {execution_date}")
-#     if last_played_song is None:
-#         date_string = execution_date.strftime('%Y-%m-%d %H:%M:%S.%f')
-#         print(f"NONE: last_played_song: {date_string}")
-#         timestamp = int(time.mktime(time.strptime(date_string, '%Y-%m-%d %H:%M:%S.%f')))
-#         data = recently_played_songs(start_time=timestamp)
-#         ti = context["ti"]
-        
-#         ti.xcom_push(key=f"my_data", value=data)
-
-#     else:
-#         if last_played_song.strftime('%Y-%m-%d %H:%M:%S.%f') >= execution_date.strftime('%Y-%m-%d %H:%M:%S.%f'):
-#             print(f"SKIPPING.....")
-#             pass
-#         else:
-#             date_string = last_played_song.strftime('%Y-%m-%d %H:%M:%S.%f')
-#             print(f"last_played_song: {date_string}")
-#             timestamp = int(time.mktime(time.strptime(date_string, '%Y-%m-%d %H:%M:%S.%f')))
-#             data = recently_played_songs(start_time=timestamp)
-#             ti = context["ti"]
-#             ti.xcom_push(key=f"my_data", value=data)
-
 
 def get_recently_played_songs(**context):
     start_time = context["execution_date"]
@@ -123,13 +98,8 @@ insert_data = PythonOperator(
 )
 
 
-
+# set up the dag procedure
 get_access_token >> collect_songs_data >> insert_data
-
-
-
-
-
 
 
 
