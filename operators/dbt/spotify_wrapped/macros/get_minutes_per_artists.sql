@@ -1,4 +1,4 @@
-{% macro get_minutes_per_artists(start_date, end_date, limit) %}
+{% macro get_minutes_per_artists(start_date, end_date) %}
 
 SELECT 
     a.artist_name,
@@ -9,6 +9,5 @@ USING (artist_id)
 WHERE played_at BETWEEN '{{ start_date }}' AND '{{ end_date }}'
 GROUP BY a.artist_name
 ORDER BY minutes DESC
-LIMIT {{ limit }}
 
 {% endmacro %}

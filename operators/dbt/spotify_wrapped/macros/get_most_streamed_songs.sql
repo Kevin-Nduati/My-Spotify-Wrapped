@@ -1,4 +1,4 @@
-{% macro get_most_streamed_songs(start_date, end_date, limit) %}
+{% macro get_most_streamed_songs(start_date, end_date) %}
 
 SELECT 
     track_id,
@@ -8,7 +8,6 @@ FROM tracks
 WHERE played_at BETWEEN '{{ start_date }}' and '{{ end_date }}'
 GROUP BY track_id, track_name
 ORDER BY streams DESC
-LIMIT {{ limit }}
 
 {% endmacro %}
 
