@@ -27,6 +27,8 @@ from python_callables.collect_songs import recently_played_songs
 from python_callables.insert_songs import load_json_to_postgres
 from python_callables.last_played_at import last_song
 refresh_token = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'operators', 'refresh.py'))
+dbt_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'operators', 'dbt', "spotify_wrapped"))
+
 postgres_connection = postgres_connect.ConnectPostgres().postgres_connector()
 
 
@@ -66,7 +68,6 @@ def insert_data_from_xcom(databaseName, postgres_conn_id, **context):
     load_json_to_postgres(data=data, databaseName=databaseName, postgres_conn_id=postgres_conn_id)
 
 
-    
 
 
 
@@ -108,6 +109,8 @@ collect_songs_data = PythonOperator(
     dag = dag
 )
 
+
+
 insert_data = PythonOperator(
     task_id = "insert_data",
     python_callable = insert_data_from_xcom,
@@ -118,11 +121,28 @@ insert_data = PythonOperator(
     dag = dag
 )
 
+from datetime import date
+
+# end_date = date.today().strftime("%Y-%m-%d")
+# start_date = (date.today() - timedelta(days=7)).strftime("%Y-%m-%d")
+# dbt_run = BashOperator(
+#     task_id="dbt_run",
+#     bash_command="cd '" + dbt_folder + "' && dbt run --vars '{\"start_date\": \"" + start_date + "\", \"end_date\": \"" + end_date + "\"}'"
+# )
+
+
+
+# dbt_test = BashOperator(
+#     task_id = "dbt_test",
+#     bash_command = f"cd '{dbt_folder}' && dbt test"
+# )
+
+
+
 
 # set up the dag procedure
 get_access_token >> collect_songs_data >> insert_data
-
-
-
+# >> dbt_run >> dbt_test
+ 
 
 
