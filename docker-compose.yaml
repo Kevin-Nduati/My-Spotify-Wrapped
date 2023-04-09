@@ -42,7 +42,7 @@
 version: '3'
 # Define a YAML anchor that can be referenced later in the file
 x-airflow-common:
-  # Defin the airflow image
+  # Define the airflow image
   &airflow-common
   image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.5.1}
   environment:
@@ -64,9 +64,9 @@ x-airflow-common:
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
     - ./operators:/opt/airflow/operators
-    - ./airflow.cfg:/opt/airlfow/airflow.cfg
+    - ./airflow.cfg:/opt/airflow/airflow.cfg
     - ./operators/dbt/spotify_wrapped:/opt/airflow/operators/dbt/spotify_wrapped
-  # define the user key to set the user and group ID of the container process to match the host user ID
+  # Define the user key to set the user and group ID of the container process to match the host user ID
   # This will help to avoid file permission issues
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   depends_on:
@@ -191,6 +191,7 @@ services:
     
 
   airflow-webserver:
+    image: apache/airflow:2.5.1
     <<: *airflow-common
 
     command: webserver
@@ -217,6 +218,7 @@ services:
 
   airflow-scheduler:
     <<: *airflow-common
+    image: apache/airflow:2.5.1
     command: scheduler
     container_name: airflow_scheduler
     healthcheck:
