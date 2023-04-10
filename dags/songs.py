@@ -123,26 +123,25 @@ insert_data = PythonOperator(
 
 from datetime import date
 
-# end_date = date.today().strftime("%Y-%m-%d")
-# start_date = (date.today() - timedelta(days=7)).strftime("%Y-%m-%d")
-# dbt_run = BashOperator(
-#     task_id="dbt_run",
-#     bash_command="cd '" + dbt_folder + "' && dbt run --vars '{\"start_date\": \"" + start_date + "\", \"end_date\": \"" + end_date + "\"}'"
-# )
+end_date = date.today().strftime("%Y-%m-%d")
+start_date = (date.today() - timedelta(days=7)).strftime("%Y-%m-%d")
+dbt_run = BashOperator(
+    task_id="dbt_run",
+    bash_command="cd '" + dbt_folder + "' && dbt run --vars '{\"start_date\": \"" + start_date + "\", \"end_date\": \"" + end_date + "\"}'"
+)
 
 
 
-# dbt_test = BashOperator(
-#     task_id = "dbt_test",
-#     bash_command = f"cd '{dbt_folder}' && dbt test"
-# )
+dbt_test = BashOperator(
+    task_id = "dbt_test",
+    bash_command = f"cd '{dbt_folder}' && dbt test"
+)
 
 
 
 
 # set up the dag procedure
-get_access_token >> collect_songs_data >> insert_data
-# >> dbt_run >> dbt_test
+get_access_token >> collect_songs_data >> insert_data >> dbt_run >> dbt_test
  
 
 

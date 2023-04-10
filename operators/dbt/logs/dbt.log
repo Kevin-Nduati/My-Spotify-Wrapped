@@ -1,26 +1,10 @@
 
 
-============================== 2023-03-16 21:11:41.373583 | 9cb8a637-db16-4a8a-bcc0-cef2288a5f23 ==============================
-[0m21:11:41.373583 [info ] [MainThread]: Running with dbt=1.4.3
-[0m21:11:41.377060 [debug] [MainThread]: running dbt with arguments {'write_json': True, 'use_colors': True, 'printer_width': 80, 'version_check': True, 'partial_parse': True, 'static_parser': True, 'profiles_dir': '/home/kevin/.dbt', 'send_anonymous_usage_stats': True, 'quiet': False, 'no_print': False, 'cache_selected_only': False, 'skip_profile_setup': False, 'which': 'init', 'indirect_selection': 'eager'}
-[0m21:11:41.377548 [debug] [MainThread]: Tracking: tracking
-[0m21:11:41.380262 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6840d82b90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6840d83850>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6840d82ce0>]}
-[0m21:11:55.839514 [debug] [MainThread]: Starter project path: /home/kevin/environments/spotify_env/lib/python3.10/site-packages/dbt/include/starter_project
-[0m21:11:59.319037 [info ] [MainThread]: 
-Your new dbt project "spotify_wrapped" was created!
-
-For more information on how to configure the profiles.yml file,
-please consult the dbt documentation here:
-
-  https://docs.getdbt.com/docs/configure-your-profile
-
-One more thing:
-
-Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
-
-  https://community.getdbt.com/
-
-Happy modeling!
-
-[0m21:11:59.320640 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6840d83850>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6840d836a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6840d81ed0>]}
-[0m21:11:59.321833 [debug] [MainThread]: Flushing usage events
+============================== 2023-04-10 09:45:41.885563 | ded869ad-6600-4a45-8f64-bc21b7d7b863 ==============================
+[0m09:45:41.885563 [info ] [MainThread]: Running with dbt=1.4.3
+[0m09:45:41.890420 [debug] [MainThread]: running dbt with arguments {'write_json': True, 'use_colors': True, 'printer_width': 80, 'version_check': True, 'partial_parse': True, 'static_parser': True, 'profiles_dir': '/home/kevin/.dbt', 'send_anonymous_usage_stats': True, 'quiet': False, 'no_print': False, 'cache_selected_only': False, 'project_name': 'spotify_wrapped', 'skip_profile_setup': False, 'which': 'init', 'indirect_selection': 'eager'}
+[0m09:45:41.891399 [debug] [MainThread]: Tracking: tracking
+[0m09:45:41.894959 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9e5eaa22c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9e5eaa33a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9e5eaa2320>]}
+[0m09:45:41.899422 [debug] [MainThread]: Starter project path: /home/kevin/environments/spotify_env/lib/python3.10/site-packages/dbt/include/starter_project
+[0m09:45:51.427475 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9e5eaca9e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9e5eac9bd0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9e5eac8130>]}
+[0m09:45:51.429345 [debug] [MainThread]: Flushing usage events
