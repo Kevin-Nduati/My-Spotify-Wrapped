@@ -64,7 +64,6 @@ total_minutes = str(total_minutes_streamed.values[0][0])
 ax1.text(0.45, 0.70, "Total Minutes Streamed", fontweight="bold", fontsize=35, color=color1, fontfamily="serif", ha="center")
 ax1.text(0.52, 0.45, total_minutes, fontweight="bold", fontsize=160, color=color2, fontfamily="serif", ha="center", va="center")
 
-# empty request
 
 # Axis 2 values
 artists_listened = artists_listened_to.values[0][0]
@@ -187,6 +186,9 @@ ax8.set_title("Most Played Song this week", fontweight="bold", fontsize=35, colo
 title="Here is your Spotify wrapped for the last week"
 plt.suptitle(title, fontweight="bold", fontsize=55, color="black", fontfamily="serif")
 plt.tight_layout()
-fig.savefig('spotify_wrapped.png')
 
-plt.show()
+
+if __name__=="__main__":
+    fig.savefig('spotify_wrapped.png')
+
+
