@@ -11,12 +11,14 @@ from airflow import DAG
 
 spotify_wrapped_image = os.path.abspath(
     os.path.join(
-        os.path.dirname(__file__), "..", "operators/dashboard", "spotify_wrapped.png"
+        os.path.dirname(__file__), "..", "operators/dashboard",
+          "spotify_wrapped.png"
     )
 )
 dashboard = os.path.abspath(
     os.path.join(
-        os.path.dirname(__file__), "..", "operators", "dashboard", "dashboard.py"
+        os.path.dirname(__file__), "..", "operators", "dashboard",
+          "dashboard.py"
     )
 )
 print(dashboard)
@@ -45,12 +47,13 @@ dag = DAG(
 )
 
 run_dashboard = BashOperator(
-    task_id="run_dashboard", bash_command="python3 '{0}'".format(dashboard), dag=dag
+    task_id="run_dashboard", bash_command="python3 '{0}'".format(dashboard),
+      dag=dag
 )
 
 dashboard = os.path.abspath(
     os.path.join(
-        os.path.dirname(__file__), "..", "operators", "dashboard", "dashboard.py"
+    os.path.dirname(__file__), "..", "operators", "dashboard", "dashboard.py"
     )
 )
 
