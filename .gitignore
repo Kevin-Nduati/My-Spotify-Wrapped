@@ -1,3 +1,4 @@
 .env
 dags/airflow.cfg
 airflow.cfg
+.jscpd.json

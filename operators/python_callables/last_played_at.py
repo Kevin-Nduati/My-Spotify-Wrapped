@@ -2,6 +2,7 @@ import json
 import psycopg2
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
+
 def last_song(postgres_conn_id):
     # connect to the postgres database
     hook = PostgresHook(postgres_conn_id=postgres_conn_id)

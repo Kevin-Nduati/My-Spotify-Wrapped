@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
 
 import psycopg2
@@ -16,7 +17,6 @@ class ConnectPostgres:
     def postgres_connector(self):
         conn = psycopg2.connect(
             f"host='{self.host}' port='{self.port}' dbname='{self.dbname}' user='{self.pg_user}' password='{self.pg_password}'"
-
         )
         return conn
 
