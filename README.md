@@ -17,10 +17,4 @@ Test your pipeline locally by running the actions locally with act.
 Push your changes to GitHub and watch as your pipeline runs automatically in response to new code changes.
 There are many details to consider when setting up a CI/CD pipeline, such as secrets management, artifacts, and notifications. However, the steps above should give you a good starting point.
 
-# I will define a simple workflow using Super-Linter. The end goal of this tool is:
-# * Prevent broken code from being uploaded to the default branch
-# * Help establish best practices across multiple languages
-# * Build guidelines for code layout and format
-# * Automate the process to help streamline code reviews
 
-# For more information: https://github.com/marketplace/actions/super-linter
