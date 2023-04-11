@@ -29,5 +29,5 @@ jobs:
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AUTO_FIX: "true"
+          auto_fix: "true"${{ github.event_name == 'pull_request' }}
 
