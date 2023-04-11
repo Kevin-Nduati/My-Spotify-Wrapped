@@ -2,7 +2,10 @@ import json
 import psycopg2
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
-def load_json_to_postgres(data, databaseName: str, postgres_conn_id: str, *args, **kwargs):
+
+def load_json_to_postgres(
+    data, databaseName: str, postgres_conn_id: str, *args, **kwargs
+):
     # connect to the postgres database
     hook = PostgresHook(postgres_conn_id=postgres_conn_id)
     conn = hook.get_conn()
@@ -17,8 +20,16 @@ def load_json_to_postgres(data, databaseName: str, postgres_conn_id: str, *args,
                 ON CONFLICT ON CONSTRAINT unique_track_info
                 DO NOTHING
                 """,
-                (row["track_id"], row["track_name"], row["album_id"], row["artist_id"], row["song_duration_ms"], 
-                 row["explicit"], row["popularity"], row["played_at"])
+                (
+                    row["track_id"],
+                    row["track_name"],
+                    row["album_id"],
+                    row["artist_id"],
+                    row["song_duration_ms"],
+                    row["explicit"],
+                    row["popularity"],
+                    row["played_at"],
+                ),
             )
             # Insert or update row in the albums table
             cur.execute(
@@ -27,7 +38,7 @@ def load_json_to_postgres(data, databaseName: str, postgres_conn_id: str, *args,
                 VALUES (%s, %s, %s)
                 ON CONFLICT (album_id) DO NOTHING
                 """,
-                (row["album_id"], row["album_name"], row["release_date"])
+                (row["album_id"], row["album_name"], row["release_date"]),
             )
             # Insert or update row in the artists table
             cur.execute(
@@ -36,7 +47,7 @@ def load_json_to_postgres(data, databaseName: str, postgres_conn_id: str, *args,
                 VALUES (%s, %s, %s)
                 ON CONFLICT (artist_id) DO NOTHING 
                 """,
-                (row["artist_id"], row["artist_name"], row["artist_genres"])
+                (row["artist_id"], row["artist_name"], row["artist_genres"]),
             )
             conn.commit()
         print(f"The insert procedure has been successfully run")
@@ -45,5 +56,3 @@ def load_json_to_postgres(data, databaseName: str, postgres_conn_id: str, *args,
     finally:
         cur.close()
         conn.close()
-
-        

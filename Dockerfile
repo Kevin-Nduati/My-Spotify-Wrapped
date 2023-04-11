@@ -12,13 +12,13 @@ RUN apt-get update && \
 RUN pip install --upgrade pip
 
 # Install Airflow with extras
-ARG AIRFLOW_VERSION=2.2.0
+ARG AIRFLOW_VERSION=2.5.1
 ENV AIRFLOW_HOME=/opt/airflow
-RUN pip install apache-airflow==2.5.1
+RUN pip install apache-airflow==${AIRFLOW_VERSION}
 
 # Install other dependencies
 COPY requirements.txt /tmp/
-RUN pip install -r /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 WORKDIR /opt/airflow
 
@@ -33,8 +33,6 @@ RUN airflow users create \
     --role Admin \
     --email nduatikevin1@gmail.com \
     --use-random-password
-
-
 
 # Copy the DAGs folder
 COPY dags/ /opt/airflow/dags/
