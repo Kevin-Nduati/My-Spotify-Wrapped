@@ -45,6 +45,8 @@ run_dashboard = BashOperator(
 
 )
 
+dashboard = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'operators', 'dashboard','dashboard.py'))
+
 
 send_email_notification= EmailOperator(
     task_id="send_email",
