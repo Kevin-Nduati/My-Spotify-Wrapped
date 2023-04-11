@@ -6,11 +6,9 @@
 
 # For more information: https://github.com/marketplace/actions/super-linter
 
-
 name: Super-Linter
 
-
-on: 
+on:
   push:
     branches: master
   pull_request:
@@ -29,5 +27,4 @@ jobs:
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          auto_fix: "true"${{ github.event_name == 'pull_request' }}
-
+          flake8: false

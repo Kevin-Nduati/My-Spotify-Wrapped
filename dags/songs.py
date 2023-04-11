@@ -1,22 +1,19 @@
-import sys
 import os
+import sys
+import time
+from datetime import date, timedelta
+
 import postgres_connect
-from python_callables.collect_songs import recently_played_songs
-from python_callables.insert_songs import load_json_to_postgres
-from python_callables.last_played_at import last_song
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from datetime import date
-
-from datetime import timedelta
-import time
-
+from python_callables.collect_songs import recently_played_songs
+from python_callables.insert_songs import load_json_to_postgres
+from python_callables.last_played_at import last_song
 
 # Get the parent directory of the current file ( "dags" folder)
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                           os.pardir))
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "operators"))
 )
@@ -44,16 +41,14 @@ def get_recently_played_songs(postgres_conn_id, **context):
     if last_play_time is None:
         date_string = execution_date.strftime("%Y-%m-%d %H:%M:%S.%f")
         print(f"The database is empty. So we will use {date_string}")
-        timestamp = int(time.mktime(time.strptime(date_string,
-                                                   "%Y-%m-%d %H:%M:%S.%f")))
+        timestamp = int(time.mktime(time.strptime(date_string, "%Y-%m-%d %H:%M:%S.%f")))
         data = recently_played_songs(start_time=timestamp)
         ti = context["ti"]
         ti.xcom_push(key="my_data", value=data)
     else:
         date_string = last_play_time.strftime("%Y-%m-%d %H:%M:%S.%f")
         print(f"The last played song is: {date_string}")
-        timestamp = int(time.mktime(time.strptime(date_string,
-                                                   "%Y-%m-%d %H:%M:%S.%f")))
+        timestamp = int(time.mktime(time.strptime(date_string, "%Y-%m-%d %H:%M:%S.%f")))
         data = recently_played_songs(start_time=timestamp)
         ti = context["ti"]
         ti.xcom_push(key="my_data", value=data)
