@@ -3,14 +3,11 @@ import sys
 import time
 from datetime import date, timedelta
 
-import postgres_connect
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from python_callables.collect_songs import recently_played_songs
-from python_callables.insert_songs import load_json_to_postgres
-from python_callables.last_played_at import last_song
+
 
 # Get the parent directory of the current file ( "dags" folder)
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
@@ -25,8 +22,12 @@ refresh_token = os.path.abspath(
 dbt_folder = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "operators", "dbt", "spotify_wrapped")
 )
+import postgres_connect
 
 postgres_connection = postgres_connect.ConnectPostgres().postgres_connector()
+from python_callables.collect_songs import recently_played_songs
+from python_callables.insert_songs import load_json_to_postgres
+from python_callables.last_played_at import last_song
 
 
 def get_next_execution_date():
